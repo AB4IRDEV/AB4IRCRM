@@ -20,9 +20,12 @@
                 <td class="px-4 py-2">{{ $role->id }}</td>
                 <td class="px-4 py-2">{{ $role->name }}</td>
                 <td class="px-4 py-2 flex">
-                    <x-edit-assign-role-modal class="mx-4" :roles="$role"/>
-                    <x-edit-modal :permission="$role" />
-                    <x-confirm-delete :route="route('permissions.destroy', $role->id)" message="Are you sure you want to remove this permission?" />
+                    <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" 
+                        class="inline-block px-3 py-1 mx-4 text-xs font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+                         Add/Edit Permissions
+                     </a>
+                     <x-edit-modal :item="$role" type="role" />
+                    <x-confirm-delete :route="route('roles.destroy', $role->id)" message="Are you sure you want to remove this permission?" />
 
                 </td>
             </tr>

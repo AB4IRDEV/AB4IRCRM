@@ -20,7 +20,7 @@
                 <td class="px-4 py-2">{{ $permission->id }}</td>
                 <td class="px-4 py-2">{{ $permission->name }}</td>
                 <td class="px-4 py-2 flex">
-                    <x-edit-modal :permission="$permission" />
+                    <x-edit-modal :item="$permission" type="permission" />
                     <x-confirm-delete :route="route('permissions.destroy', $permission->id)" message="Are you sure you want to remove this permission?" />
 
                 </td>

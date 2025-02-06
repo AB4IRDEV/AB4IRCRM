@@ -30,7 +30,8 @@ Route::delete('permissions/{permission}', [PermissionsController::class, 'destro
 
 Route::resource('roles', RolesController::class);
 Route::delete('roles/{roles}', [RolesController::class, 'destroy'])->name('roles.destroy');
-
+Route::get('roles/{roleId}/give-permissions', [RolesController::class, 'addPermissionToRole'])
+    ->name('addPermissionToRole');
 
 
 require __DIR__.'/auth.php';
