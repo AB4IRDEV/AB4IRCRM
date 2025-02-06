@@ -1,0 +1,1 @@
+<img src="{{asset('ab4irlogo.png')}}" alt="" class="w-32">
