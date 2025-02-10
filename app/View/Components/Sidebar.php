@@ -28,7 +28,7 @@ class Sidebar extends Component
             'General' => [
                 ['name' => 'Permissions', 'icon' => 'folder', 'route' => 'permissions.index'],
                 ['name' => 'Roles', 'icon' => 'groups', 'route' => 'roles.index'],
-                ['name' => 'Transfer', 'icon' => 'move_up', 'route' => 'transfer'],
+                ['name' => 'User', 'icon' => 'move_up', 'route' => 'user.index'],
                 ['name' => 'Reports', 'icon' => 'flag', 'route' => 'reports.index'],
                 ['name' => 'Notifications', 'icon' => 'notifications_active', 'route' => 'notifications'],
             ],

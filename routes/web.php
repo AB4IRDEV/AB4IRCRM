@@ -4,6 +4,7 @@ use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
@@ -30,8 +31,12 @@ Route::delete('permissions/{permission}', [PermissionsController::class, 'destro
 
 Route::resource('roles', RolesController::class);
 Route::delete('roles/{roles}', [RolesController::class, 'destroy'])->name('roles.destroy');
-Route::get('roles/{roleId}/give-permissions', [RolesController::class, 'addPermissionToRole'])
-    ->name('addPermissionToRole');
+Route::get('roles/{roleId}/give-permissions', [RolesController::class, 'addPermissionToRole'])->name('addPermissionToRole');
+Route::put('roles/{roleId}/give-permissions', [RolesController::class, 'givePermissionToRole'])->name('givePermissionToRole');
+
+Route::resource('user', UserController::class);
+Route::delete('user/{roles}', [RolesController::class, 'destroy'])->name('user.destroy');
+
 
 
 require __DIR__.'/auth.php';

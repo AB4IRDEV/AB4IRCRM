@@ -16,9 +16,7 @@
                 <table class="w-full border-collapse border border-gray-300 dark:border-gray-700 rounded-lg">
                     <thead class="bg-gray-100 dark:bg-black">
                         <tr>
-                            <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">ID</th>
-                            <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Name</th>
-                            <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Action</th>
+                            {{ $headers }}
                         </tr>
                     </thead>
                     <tbody>

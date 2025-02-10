@@ -4,6 +4,11 @@
         <div class="flex flex-wrap">
             <div class="w-full md:w-full">
                 <x-card-table title="All Roles" buttonText="Add Roles" buttonLink="">
+                    <x-slot name="headers">
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">ID</th>
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Name</th>
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Action</th>
+                    </x-slot>   
             @if (session('status'))
             <div 
                 x-data="{ show: true }" 
@@ -24,7 +29,7 @@
                         class="inline-block px-3 py-1 mx-4 text-xs font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
                          Add/Edit Permissions
                      </a>
-                     <x-edit-modal :item="$role" type="role" />
+                    <x-edit-modal :item="$role" type="role" />
                     <x-confirm-delete :route="route('roles.destroy', $role->id)" message="Are you sure you want to remove this permission?" />
 
                 </td>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -60,42 +61,29 @@ class RolesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, Role $role)
+    public function edit(Request $request)
     {
-        $request->validate([
-            'name'=>[
-
-                'required',
-                'unique:roles,name',
-                'string' 
-            ]
-            ]);
-
-        $role->updated([
-            'name'=> $request->name
-        ]);
-
-        return redirect('roles')->with('status', 'roles updated successfully');
+      
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $roles)
+    public function update(Request $request, Role $role)  // Use singular variable
     {
         $request->validate([
-            'name'=>[
+            'name' => [
+                'required',
                 'string',
-                'unique:permissions,name',
-                'required'
-            ]
-            ]);
-            
-            $roles->update([
-                'name'=> $request->name
-            ]);
-
-            return redirect('roles')->with('status', 'role-saved');
+                Rule::unique('roles', 'name')->ignore($role->id),
+            ],
+        ]);
+    
+        $role->update([
+            'name' => $request->name
+        ]);
+    
+        return redirect()->route('roles.index')->with('status', 'Role updated successfully!');
     }
 
     /**

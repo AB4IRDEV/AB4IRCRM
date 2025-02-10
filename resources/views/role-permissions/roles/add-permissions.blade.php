@@ -4,6 +4,12 @@
         <div class="flex flex-wrap">
             <div class="w-full md:w-full">
                 <x-card-table title="Role:{{$roles->name}}" buttonText="back" buttonLink="{{url('roles')}}">
+                    <x-slot name="headers">
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">ID</th>
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Name</th>
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Action</th>
+                    </x-slot>
+
             @if (session('status'))
             <div 
                 x-data="{ show: true }" 
