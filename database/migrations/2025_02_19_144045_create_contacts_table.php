@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stakeholders', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('organisation')->unique();
-            $table->enum('type', ['Funder', 'Implementing Partner','Associate' ]);
-            $table->string('email')->unique();
-            $table->string('phone');
-            $table->string('address');
+            $table->foreignId('stakeholder_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('department')->nullable();
+            $table->string('position')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stakeholders');
+        Schema::dropIfExists('contacts');
     }
 };
