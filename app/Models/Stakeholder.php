@@ -12,12 +12,13 @@ class Stakeholder extends Model
     const TYPES = ['Funder', 'Associate', 'Impelementing Partner', 'supplier'];
     protected $fillable = ['organisation', 'type', 'contact_person', 'email', 'phone', 'created_by', 'updated_by'];
 
+  
+
     public function programs()
     {
-        return $this->belongsToMany(Program::class, 'program_funder')
-            ->withPivot('financial_year')
-            ->withTimestamps();
+        return $this->belongsToMany(Program::class, 'funder_program');
     }
+    
 
     public function creator()
     {

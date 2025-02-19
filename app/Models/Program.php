@@ -12,11 +12,14 @@ class Program extends Model
 
     protected $fillable = ['name', 'description', 'created_by', 'updated_by'];
 
-    public function funders()
+    public function stakeholders()
     {
-        return $this->belongsToMany(Stakeholder::class, 'program_funder')
-            ->withPivot('financial_year')
-            ->withTimestamps();
+        return $this->belongsToMany(Stakeholder::class, 'funder_program');
+    }
+
+    public function beneficiaries()
+    {
+        return $this->belongsToMany(Beneficiary::class, 'beneficiary_program');
     }
 
     public function creator()

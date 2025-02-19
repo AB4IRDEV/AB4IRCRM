@@ -54,6 +54,11 @@ class Beneficiary extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    public function programs()
+    {
+        return $this->belongsToMany(Program::class, 'beneficiary_program');
+    }
+
     protected $casts = [
         'dob' => 'date',
     ];
