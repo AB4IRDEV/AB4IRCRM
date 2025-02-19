@@ -26,9 +26,7 @@ class Sidebar extends Component
                 ['name' => 'Analytics', 'icon' => 'monitoring', 'route' => 'analytics'],
             ],
             'General' => [
-                ['name' => 'Permissions', 'icon' => 'folder', 'route' => 'permissions.index'],
-                ['name' => 'Roles', 'icon' => 'groups', 'route' => 'roles.index'],
-                ['name' => 'User', 'icon' => 'move_up', 'route' => 'user.index'],
+                
                 ['name' => 'Reports', 'icon' => 'flag', 'route' => 'reports.index'],
                 ['name' => 'Notifications', 'icon' => 'notifications_active', 'route' => 'notifications'],
             ],
@@ -39,10 +37,12 @@ class Sidebar extends Component
         ];
     
         // If user is an admin, add admin-specific menus
-        if ($this->user && $this->user->hasRole('admin')) {
+        if ($this->user && $this->user->hasRole('Admin')) {
             $menus['Admin'] = [
-                ['name' => 'User Management', 'icon' => 'manage_accounts', 'route' => 'admin.users'],
-                ['name' => 'Permissions', 'icon' => 'lock', 'route' => 'admin.permissions'],
+                ['name' => 'Permissions', 'icon' => 'folder', 'route' => 'permissions.index'],
+                ['name' => 'Roles', 'icon' => 'groups', 'route' => 'roles.index'],
+                ['name' => 'User', 'icon' => 'move_up', 'route' => 'user.index'],
+                ['name' => 'beneficiaries', 'icon' => 'move_up', 'route' => 'beneficiaries.index'],
             ];
         }
     

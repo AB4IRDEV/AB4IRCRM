@@ -36,7 +36,7 @@
                 </td>
                 <td class="px-4 py-2 flex">
                     <a href="{{ url('user/'.$user->id.'/edit') }}" 
-                        class="inline-block px-3 py-1 mx-4 text-xs font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+                        class="inline-block btn btn bg-warning px-3 py-1 mx-2 text-xs font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
                          Edit User
                      </a>
                     <x-confirm-delete :route="route('user.destroy', $user->id)" message="Are you sure you want to remove this user?" />
@@ -67,7 +67,7 @@
                 <x-input-error class="mt-2" :messages="$errors->get('email')" />
                 </div>
                 <div class="my-4">
-                    <x-input-label for="permission" :value="__('Permissions')" />
+                    <x-input-label for="Roles" :value="__('Roles')" />
                     <div class="grid grid-cols-3 md:grid-cols-4 gap-4 my-4">
                     @foreach ($iroles as $irole)
                         <div class="w-full md:w-full flex items-center space-x-2">

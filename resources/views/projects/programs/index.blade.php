@@ -3,12 +3,12 @@
         
         <div class="flex flex-wrap">
             <div class="w-full md:w-full">
-                <x-card-table title="All Roles" buttonText="Add Roles" buttonLink="">
+                <x-card-table title="All Programs" buttonText="Add Permission" buttonLink="">
                     <x-slot name="headers">
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">ID</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Name</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Action</th>
-                    </x-slot>   
+                    </x-slot>
             @if (session('status'))
             <div 
                 x-data="{ show: true }" 
@@ -20,17 +20,13 @@
                 {{ session('status') }}
             </div>
         @endif
-            @foreach($roles as $role)
+            @foreach($programs as $program)
             <tr class="border-b border-gray-200 dark:border-gray-700 text-black">
-                <td class="px-4 py-2">{{ $role->id }}</td>
-                <td class="px-4 py-2">{{ $role->name }}</td>
+                <td class="px-4 py-2">{{ $program->id }}</td>
+                <td class="px-4 py-2">{{ $programn->name }}</td>
                 <td class="px-4 py-2 flex">
-                    <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" 
-                        class="inline-block btn btn-dark px-3 py-2 mx-1 text-xs font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
-                         Add/Edit Permissions
-                     </a>
-                    <x-edit-modal :item="$role" type="role" />
-                    <x-confirm-delete :route="route('roles.delete', $role->id)" message="Are you sure you want to remove this permission?" />
+                    <x-edit-modal :item="$permission" type="permission" />
+                    <x-confirm-delete :route="route('permissions.destroy', $permission->id)" message="Are you sure you want to remove this permission?" />
 
                 </td>
             </tr>
@@ -44,8 +40,8 @@
         <div class="flex flex-wrap">
             <div class="w-full md:w-full">
 
-                 <x-card title=" Add Role" buttonText="" buttonLink="roles/create">
-                <form method="post" action="{{ url('roles') }}" class="mt-6 space-y-6">
+                 <x-card title=" Add program" buttonText="" buttonLink="permissions/create">
+                <form method="post" action="{{ url('permissions') }}" class="mt-6 space-y-6">
                 @csrf
         
                 <div>
@@ -53,9 +49,14 @@
                 <x-text-input id="name" name="name" type="text" class="mt-1 block w-full"  required autofocus autocomplete="name" />
                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
                 </div>
+                <div>
+                <x-input-label for="Program Description" :value="__('Program Description')" />
+                <x-textarea-input id="name" name="description" type="text" class="mt-1 block w-full"  required autofocus autocomplete="name" />
+                <x-input-error class="mt-2" :messages="$errors->get('description')" />
+                </div>
                 <div class="flex items-center gap-4">
                     <x-primary-button>{{ __('Submit') }}</x-primary-button>
-                    @if (session('status') === 'role-saved')
+                    @if (session('status') === 'permission-saved')
                     <p
                         x-data="{ show: true }"
                         x-show="show"

@@ -50,7 +50,7 @@ body {
   font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
-  margin-left: 23px;
+
 }
 
 .sidebar-links h4 {
@@ -81,6 +81,7 @@ body {
   transform-origin: right;
   transition-delay: 0.2s;
   margin-left: -20px;
+
 }
 
 .sidebar:hover .sidebar-links .menu-separator {
@@ -110,7 +111,7 @@ body {
   padding: 15px 10px;
   text-decoration: none;
   transition: 0.2s ease;
-  margin-left: -35px;
+  margin-left: -45px;
 }
 
 .sidebar-links li a:hover {
@@ -136,6 +137,7 @@ body {
   height: 42px;
   border-radius: 50%;
   border: 2px solid #fff;
+  margin-left: 7px;
 }
 
 .user-profile h3 {

@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +10,7 @@
       <i class="bx bx-menu" id="sidebar-open"></i>
       <input type="text" placeholder="Search..." class="search_box" />
       <span class="nav_image">
-        <img src="{{asset('Profile-img.jpg')}}" alt="logo_img" />
+        <img src="{{ 'storage/'  . $user->file}}" alt="logo_img" />
       </span>
 </nav>
 
-</body>
-</html>

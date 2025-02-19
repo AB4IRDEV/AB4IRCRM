@@ -2,7 +2,7 @@
 
 <div x-data="{ open: false }">
     <!-- Edit Button -->
-    <button @click="open = true" class="px-3 py-1 bg-yellow-500 hover:bg-red-700 text-white text-xs font-medium rounded">
+    <button @click="open = true" class="px-4 btn btn-warning py-2 mx-2 bg-yellow-500 hover:bg-red-700 text-white text-xs font-medium rounded">
         {{ __('Edit') }}
     </button>
 

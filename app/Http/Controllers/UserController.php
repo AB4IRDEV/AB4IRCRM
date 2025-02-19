@@ -43,7 +43,7 @@ class UserController extends Controller
         $user =User::create([
             'name'=>$request->name,
             'email'=>$request->email,
-            'password'=>Hash::make($request->password)
+            'password'=>$request->password
         ]);
 
         $user->syncRoles($request->roles);
@@ -87,14 +87,14 @@ class UserController extends Controller
         $data=[
             'name'=> $request->name,
             'email' =>$request->email,
-            'password'=>Hash::make($request->password),
+            'password'=>$request->password,
         ];
 
         if(!empty($request->password))
         
             {
                 $data +=[
-                'password'=>Hash::make($request->password),
+                'password'=>$request->password,
                 ];
             }
 

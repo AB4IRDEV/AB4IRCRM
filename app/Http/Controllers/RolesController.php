@@ -89,7 +89,7 @@ class RolesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function delete(Role $role)
     {
         $role->delete();
         return redirect('roles')->with('status', 'role deleted successfully!');

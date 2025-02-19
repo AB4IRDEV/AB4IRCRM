@@ -1,7 +1,7 @@
 <div x-data="{ confirmDelete: false }">
     <!-- Delete Button -->
     <button type="button" 
-        class="mx-3 px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded"
+        class="btn btn-danger px-5 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded"
         @click="confirmDelete = true">
         Delete
     </button>
