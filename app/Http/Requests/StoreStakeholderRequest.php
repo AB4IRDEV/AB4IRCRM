@@ -27,7 +27,7 @@ class StoreStakeholderRequest extends FormRequest
             'phone'=>'nullable|max:10',
             'type'=>'required',
             'email'=>'nullable|email|string|max:255',
-            'contact_person'=>'nullable|string|max:255',
+            'address'=>'nullable|string|max:255',
             
         ];
     }

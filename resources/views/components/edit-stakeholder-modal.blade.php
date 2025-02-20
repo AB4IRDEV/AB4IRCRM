@@ -2,13 +2,13 @@
 
 <div x-data="{ open: false }">
     <!-- Edit Button -->
-    <button @click="open = true" class="px-3 py-1 bg-yellow-500 hover:bg-red-700 text-white text-xs font-medium rounded">
+    <button @click="open = true" class="px-3 btn btn-warning mx-2  py-2 bg-yellow-500 hover:bg-red-700 text-white text-xs font-medium rounded">
         {{ __('Edit') }}
     </button>
 
     <!-- Modal -->
-    <div x-show="open" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" x-cloak>
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-1/3">
+    <div x-show="open" class="fixed  inset-0 flex items-center justify-center bg-black bg-opacity-50" x-cloak>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-1/2">
             <a href="{{url('stakeholders')}}" class="btn btn-dark float-end">back</a>
             <h2 class="text-lg font-semibold mb-4">{{ __('Edit ' . ucfirst($type)) }}</h2>
 
@@ -33,9 +33,9 @@
                     </div>
 
                     <div class="w-full">
-                        <x-input-label for="Contact Person" :value="__('Contact Person')" />
-                        <x-text-input id="contact_person" value="{{ $item->contact_person}}" name="contact_person" type="text" class="mt-1 block w-full"  required autofocus autocomplete="name" />
-                        <x-input-error class="mt-2" :messages="$errors->get('contact_person')" />
+                        <x-input-label for="Organisation Address" :value="__('Organisation Address')" />
+                        <x-text-input id="address" value="{{ $item->address}}" name="address" type="text" class="mt-1 block w-full"  autofocus autocomplete="name" />
+                        <x-input-error class="mt-2" :messages="$errors->get('address')" />
                     </div>
                 </div>
 

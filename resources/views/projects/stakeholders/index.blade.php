@@ -1,16 +1,16 @@
 <x-app-layout>
-    <div class="container mx-auto px-4">
+    <div class="mx-auto px-4">
         
         <div class="flex flex-wrap">
-            <div class="w-full md:w-full">
+            <div class="w-full md:w-full translate-x-10">
                 <x-card-table title="All Stakeholders" buttonText="" buttonLink="">
                     <x-slot name="headers">
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">ID</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Organisation</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Type</th>
-                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Contact Person</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Phone</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Email</th>
+                        <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Address</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Action</th>
                     </x-slot>
             @if (session('status'))
@@ -27,14 +27,22 @@
             @foreach($stakeholders as $stakeholder)
             <tr class="border-b border-gray-200 dark:border-gray-700 text-black">
                 <td class="px-4 py-2">{{ $stakeholder->id }}</td>
-                <td class="px-4 py-2">{{ $stakeholder->organisation}}</td>
+                <td class="px-4 py-2"><a href="{{route('stakeholders.show', $stakeholder->id)}}">{{ $stakeholder->organisation}}</a></td>
                 <td class="px-4 py-2">{{ $stakeholder->type}}</td>
-                <td class="px-4 py-2">{{ $stakeholder->contact_person}}</td>
                 <td class="px-4 py-2">{{ $stakeholder->phone}}</td>
                 <td class="px-4 py-2">{{ $stakeholder->email}}</td>
+                <td class="px-4 py-2">{{ $stakeholder->address}}</td>
                 <td class="px-4 py-2 flex">
-                    <x-edit-stakeholder-modal :item="$stakeholder" type="stakeholders" :types="$types" />
-                    <x-confirm-delete :route="route('stakeholder.delete', $stakeholder->id)" message="Are you sure you want to remove this stakeholder?" />
+                    <a href="{{ url('stakeholders/'.$stakeholder->id) }}" 
+                        class="inline-block btn btn-warning px-3 py-2 mr-2 text-xs font-medium text-white bg-yellow-600 rounded hover:bg-gray-700">
+                         View Stakeholder
+                     </a>
+                     
+                    <a href="{{ url('stakeholders/'.$stakeholder->id.'/edit') }}" 
+                        class="inline-block btn btn-dark px-3 py-2 mx-4 text-xs font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+                         Edit Stakeholder
+                     </a>
+                    <x-confirm-delete :route="route('stakeholders.destroy', $stakeholder->id)" message="Are you sure you want to remove this stakeholder?" />
 
                 </td>
             </tr>
@@ -69,9 +77,9 @@
                     </div>
 
                     <div class="w-full">
-                        <x-input-label for="Contact Person" :value="__('Contact Person')" />
-                        <x-text-input id="contact_person" name="contact_person" type="text" class="mt-1 block w-full"  required autofocus autocomplete="name" />
-                        <x-input-error class="mt-2" :messages="$errors->get('contact_person')" />
+                        <x-input-label for="Address" :value="__('Organisation Address')" />
+                        <x-text-input id="address" name="address" type="text" class="mt-1 block w-full" autofocus autocomplete="name" />
+                        <x-input-error class="mt-2" :messages="$errors->get('address')" />
                     </div>
                 </div>
      

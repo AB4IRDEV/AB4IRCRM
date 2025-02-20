@@ -6,6 +6,7 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StakeholderController;
 use App\Http\Controllers\BeneficiaryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
@@ -45,7 +46,7 @@ Route::delete('user/{user}', [UserController::class, 'destroy'])->name('user.des
 Route::resource('user', UserController::class);
 
 //Stakeholder Crud Routes
-Route::delete('stakeholders/{stakeholders}',[StakeholderController::class,'delete'])->name('stakeholder.delete');
+Route::delete('stakeholders/{stakeholder}',[StakeholderController::class,'delete'])->name('stakeholder.delete');
 Route::resource('stakeholders', StakeholderController::class);
 
 //Projects Crud Routes
@@ -58,6 +59,7 @@ Route::resource('beneficiaries', BeneficiaryController::class);
 Route::delete('/beneficiaries/{beneficiary}', [BeneficiaryController::class, 'destroy'])->name('beneficiaries.destroy');
 Route::post('/beneficiary/finalize', [BeneficiaryController::class, 'finalize'])->name('beneficiary.finalize');
 
+Route::resource('contacts', ContactController::class);
 
 });
 

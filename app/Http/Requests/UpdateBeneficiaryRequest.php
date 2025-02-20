@@ -35,7 +35,6 @@ class UpdateBeneficiaryRequest extends FormRequest
             'id_number' => 'required|string|size:13|unique:beneficiaries,id_number',
             'gender' => 'required',
             'dob' => 'required',
-            'location' => 'required|string|max:255',
             'highest_qualification' => 'nullable|string|max:255',
             
         ];

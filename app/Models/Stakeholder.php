@@ -9,7 +9,7 @@ class Stakeholder extends Model
 {
     /** @use HasFactory<\Database\Factories\StakeholderFactory> */
     use HasFactory;
-    const TYPES = ['Funder', 'Associate', 'Impelementing Partner', 'supplier'];
+    const TYPES = ['Funder', 'Associate', 'Impelementing_Partner', 'Supplier'];
     protected $fillable = ['organisation', 'type', 'email', 'phone','address', 'created_by', 'updated_by'];
 
   
@@ -17,6 +17,10 @@ class Stakeholder extends Model
     public function programs()
     {
         return $this->belongsToMany(Program::class, 'funder_program');
+    }
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
     }
     
 

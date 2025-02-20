@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Stakeholder;
 use App\Http\Requests\StoreStakeholderRequest;
 use App\Http\Requests\UpdateStakeholderRequest;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Auth;
+
+use function PHPUnit\Framework\returnSelf;
 
 class StakeholderController extends Controller
 {
@@ -15,7 +18,7 @@ class StakeholderController extends Controller
     public function index()
     {
         $stakeholders=Stakeholder::get();
-        $types = ['Funder', 'Associate', 'Impelementing Partner', 'supplier'];
+        $types = ['Funder', 'Associate', 'Implementing_Partner', 'Supplier'];
         return view('projects.stakeholders.index',['stakeholders'=>$stakeholders, 'types'=>$types]);
     }
 
@@ -47,7 +50,20 @@ class StakeholderController extends Controller
      */
     public function show(Stakeholder $stakeholder)
     {
-        //
+        
+      
+        $contactData = $stakeholder->contacts ?? collect(); // Ensure it's always a collection
+
+        $createuser=$stakeholder->creator;
+        $updateuser=$stakeholder->updater;
+
+        return view('projects.stakeholders.show',
+        [
+                    'stakeholder'=>$stakeholder, 
+                    'contactData'=>$contactData, 
+                    'createuser'=>$createuser, 
+                    'updateuser'=>$updateuser
+              ]);
     }
 
     /**
@@ -55,7 +71,9 @@ class StakeholderController extends Controller
      */
     public function edit(Stakeholder $stakeholder)
     {
-        //
+
+        $types = ['Funder', 'Associate', 'Implementing_Partner', 'Supplier'];
+        return view('projects.stakeholders.edit',['types'=>$types,'stakeholder'=> $stakeholder]);
     }
 
     /**
@@ -80,6 +98,8 @@ class StakeholderController extends Controller
      */
     public function destroy(Stakeholder $stakeholder)
     {
-        //
+        $stakeholder->delete();
+
+        return redirect('stakeholders')->with('status', 'stakeholder deleted successfully');
     }
 }

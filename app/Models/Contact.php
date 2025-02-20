@@ -11,6 +11,7 @@ class Contact extends Model
     use HasFactory;
 
     protected $fillable=[
+        'stakeholder_id',
         'name',
         'email',
         'phone',
@@ -19,4 +20,10 @@ class Contact extends Model
         'created_by',
         'update_by',
     ];
+
+
+    public function stakeholder()
+    {
+        return $this->belongsTo(Stakeholder::class);
+    }
 }

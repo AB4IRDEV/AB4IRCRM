@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -29,7 +30,13 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        //
+        $contactData=$request->validated();
+        $contactData['created_by']=Auth::id();
+        $contactData['updated_by']=Auth::id();
+
+        Contact::create($contactData);
+
+        return back()->with('status', 'Stakeholder Contact Added Successfully');
     }
 
     /**
