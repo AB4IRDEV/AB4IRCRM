@@ -10,7 +10,7 @@ class Stakeholder extends Model
     /** @use HasFactory<\Database\Factories\StakeholderFactory> */
     use HasFactory;
     const TYPES = ['Funder', 'Associate', 'Impelementing Partner', 'supplier'];
-    protected $fillable = ['organisation', 'type', 'contact_person', 'email', 'phone', 'created_by', 'updated_by'];
+    protected $fillable = ['organisation', 'type', 'email', 'phone','address', 'created_by', 'updated_by'];
 
   
 

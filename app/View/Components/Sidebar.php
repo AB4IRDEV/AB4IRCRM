@@ -42,6 +42,8 @@ class Sidebar extends Component
                 ['name' => 'Permissions', 'icon' => 'folder', 'route' => 'permissions.index'],
                 ['name' => 'Roles', 'icon' => 'groups', 'route' => 'roles.index'],
                 ['name' => 'User', 'icon' => 'move_up', 'route' => 'user.index'],
+                ['name' => 'stakeholders', 'icon' => 'move_up', 'route' => 'stakeholders.index'],
+                ['name' => 'programs', 'icon' => 'move_up', 'route' => 'programs.index'],
                 ['name' => 'beneficiaries', 'icon' => 'move_up', 'route' => 'beneficiaries.index'],
             ];
         }

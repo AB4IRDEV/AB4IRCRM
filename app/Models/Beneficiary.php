@@ -34,9 +34,18 @@ class Beneficiary extends Model
 
     public function program()
     {
-        return $this->belongsTo(Program::class);
+        return $this->belongsToMany(Program::class, 'beneficiary_program_location')
+                    ->withPivot('location_id', 'enrollment_date')
+                    ->withTimestamps();
     }
 
+
+    public function locations()
+    {
+        return $this->belongsToMany(Locations::class, 'beneficiary_program_location')
+                    ->withPivot('program_id', 'enrollment_date')
+                    ->withTimestamps();
+    }
 
      // Relationship with Next of Kin
      public function nextOfKin() {

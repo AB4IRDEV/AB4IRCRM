@@ -10,17 +10,32 @@ class Program extends Model
     /** @use HasFactory<\Database\Factories\ProgramFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'created_by', 'updated_by'];
+    protected $fillable = ['title', 
+                           'description', 
+                           'accredited',
+                           'nqf_level',
+                           'start_date',
+                           'end_date',
+                           'year',
+                           'budget',
+                           'Status',
+                           'program_manager_id',
+                           'intended_beneficiaries',
+                           'completed_beneficiaries',
+                           'created_by', 
+                           'updated_by'];
 
-    public function stakeholders()
-    {
-        return $this->belongsToMany(Stakeholder::class, 'funder_program');
-    }
-
-    public function beneficiaries()
-    {
-        return $this->belongsToMany(Beneficiary::class, 'beneficiary_program');
-    }
+public function locations()
+{
+    return $this->belongsToMany(Locations::class, 'program_location');
+}
+                       
+public function beneficiaries()
+{
+    return $this->belongsToMany(Beneficiary::class, 'beneficiary_program_location')
+                ->withPivot('location_id', 'enrollment_date')
+                ->withTimestamps();
+}
 
     public function creator()
     {
