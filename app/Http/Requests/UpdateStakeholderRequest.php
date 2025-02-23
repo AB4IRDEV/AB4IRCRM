@@ -27,6 +27,8 @@ class UpdateStakeholderRequest extends FormRequest
             'type'=>'required',
             'email'=>'nullable|email|string|max:255',
             'contact_person'=>'nullable|string|max:255',
+            'image'=>'nullable|mimes:jpg,png,jpeg',
+            
         ];
     }
 }

@@ -11,7 +11,7 @@
             </div>
         @endif
             <x-card title="Edit Stakeholder" buttonText="back" buttonLink="stakeholders">
-                <form method="post" action="{{ route('stakeholders.update', $stakeholder->id) }}" class="mt-6 space-y-6">
+                <form method="post" action="{{ route('stakeholders.update', $stakeholder->id) }}" enctype="multipart/form-data" class="mt-6 space-y-6">
                     @csrf
                     @method('PUT')
             
@@ -50,6 +50,14 @@
                             <x-input-error class="mt-2" :messages="$errors->get('email')" />
                         </div>
                     </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="w-full">
+                            <x-input-label for="Image" :value="__('Image')" />
+                            <x-text-input id="image" name="image" type="file" class="mt-1 block w-full" />
+                            <x-input-error class="mt-2" :messages="$errors->get('image')" />
+                        </div>
+                    </div> 
     
                     <div class="flex items-center gap-4">
                         <x-primary-button>{{ __('Submit') }}</x-primary-button>

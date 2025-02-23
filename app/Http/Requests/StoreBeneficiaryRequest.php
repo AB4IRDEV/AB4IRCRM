@@ -36,6 +36,7 @@ class StoreBeneficiaryRequest extends FormRequest
             'gender' => 'required',
             'dob' => 'required',
             'highest_qualification' => 'nullable|string|max:255',
+            'photo' => 'nullable|mimes:png,jpg,jpeg',
             
         ];
     }

@@ -2,9 +2,9 @@
     <div class="max-w-7xl mx-auto px-6 py-8">
         <!-- Beneficiary Header -->
         <div class="bg-white shadow-md rounded-lg p-6 flex items-center">
-            <!-- Profile Image (Placeholder for now) -->
-            <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-gray-500 text-lg">
-                <span>IMG</span>
+               <!-- Profile Image (Placeholder for now) -->
+               <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                <img src="{{ asset($beneficiary->photo) }}" alt="Logo" class="w-full h-full object-cover">
             </div>
             <div class="ml-6">
                 <h1 class="text-2xl font-semibold text-gray-800">{{ $beneficiary->name }} {{ $beneficiary->surname }}</h1>

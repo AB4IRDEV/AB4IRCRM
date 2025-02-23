@@ -57,7 +57,7 @@
             <div class="w-full md:w-full">
 
                  <x-card title=" Add Stakeholder" buttonText="" buttonLink="stakeholders/create">
-                <form method="post" action="{{ url('stakeholders') }}" class="mt-6 space-y-6">
+                <form method="post" action="{{ url('stakeholders') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
                 @csrf
         
                 <div>
@@ -94,9 +94,16 @@
                         <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" required />
                         <x-input-error class="mt-2" :messages="$errors->get('email')" />
                     </div>
+                   
                 </div>
-
                 <div class="flex items-center gap-4">
+                    <div class="w-full">
+                        <x-input-label for="Image" :value="__('Image')" />
+                        <x-text-input id="image" name="image" type="file" class="mt-1 block w-full" />
+                        <x-input-error class="mt-2" :messages="$errors->get('image')" />
+                    </div>
+                </div>    
+                <div class=" w-1/2 items-center gap-4">
                     <x-primary-button>{{ __('Submit') }}</x-primary-button>
                     @if (session('status') === 'permission-saved')
                     <p

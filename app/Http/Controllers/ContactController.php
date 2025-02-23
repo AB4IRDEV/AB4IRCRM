@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use App\Models\Stakeholder;
 use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
@@ -28,9 +29,10 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreContactRequest $request)
+    public function store(StoreContactRequest $request, Stakeholder $stakeholder)
     {
         $contactData=$request->validated();
+        
         $contactData['created_by']=Auth::id();
         $contactData['updated_by']=Auth::id();
 
@@ -60,7 +62,11 @@ class ContactController extends Controller
      */
     public function update(UpdateContactRequest $request, Contact $contact)
     {
-        //
+       $contactData=$request->validated();
+       $contact->update($contactData);
+
+       return back()->with('status', "Contact {$contact->name} updated successfully.");
+
     }
 
     /**
@@ -68,6 +74,7 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        //
+        $contact->delete();
+        return back()->with('status', "Contact {$contact->name} deleted successfully.");
     }
 }

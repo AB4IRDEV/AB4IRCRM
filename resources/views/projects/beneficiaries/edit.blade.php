@@ -11,10 +11,10 @@
             </div>
         @endif
             <x-card title="Add Beneficiary" buttonText="back" buttonLink="beneficiaries">
-                <form method="post" action="{{ route('beneficiaries.update', $beneficiary->id) }}" class="mt-6 space-y-6">
+                <form method="post" action="{{ route('beneficiaries.update', $beneficiary->id) }}" class="mt-6 space-y-6" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                
+                 
             
                     <div class="flex w-full gap-4">
                         <div class="w-full">
@@ -89,10 +89,19 @@
                         <x-input-error class="mt-2" :messages="$errors->get('location')" />
                     </div>
             
-                    <div class="w-full">
-                        <x-input-label for="highest_qualification" :value="__('Highest Qualification')" />
-                        <x-text-input id="highest_qualification" name="highest_qualification" type="text" class="mt-1 block w-full" :value="old('highest_qualification', $beneficiary->highest_qualification)" />
-                        <x-input-error class="mt-2" :messages="$errors->get('highest_qualification')" />
+                    <div class="flex items-center gap-4">
+                        <div class="w-full">
+                            <x-input-label for="highest_qualification" :value="__('Highest Qualification')" />
+                            <x-text-input id="highest_qualification" name="highest_qualification" type="text" class="mt-1 block w-full" value="{{ session('beneficiary_data.highest_qualification', '') }}" />
+                            <x-input-error class="mt-2" :messages="$errors->get('highest_qualification')" />
+                        </div>
+
+                        <div class="w-full">
+                            <x-input-label for="Photo" :value="__('Beneficiary Photo')" />
+                            <x-text-input id="photo" name="photo" type="file" class="mt-1 block w-full" />
+                            <x-input-error class="mt-2" :messages="$errors->get('photo')" />
+                        </div>
+                             
                     </div>
             
                   

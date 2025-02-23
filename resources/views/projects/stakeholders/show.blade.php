@@ -12,13 +12,13 @@
         </div>
     @endif
         <!-- Stakeholder Header -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center">
+        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-center">
             <!-- Profile Image (Placeholder for now) -->
-            <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-gray-500 text-lg">
-                <span>IMG</span>
+            <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                <img src="{{ asset($stakeholder->logo) }}" alt="Logo" class="w-full h-full object-cover">
             </div>
             <div class="ml-6">
-                <h1 class="text-2xl font-semibold text-gray-800">{{ $stakeholder->name }} {{ $stakeholder->surname }}</h1>
+                <h1 class="text-2xl font-semibold text-gray-800">{{ $stakeholder->organisation}}</h1>
                 <p class="text-sm text-gray-500">Stakeholder Profile</p>
             </div>
         </div>
@@ -41,25 +41,64 @@
                 </div>
             </div>
 
-            <!-- Next of Kin Details -->
+            <!-- Stakeholder Contacts  -->
             <div class="bg-white shadow-md rounded-lg p-6">
                 <h2 class="text-xl font-semibold text-gray-700">Stakeholder Contacts</h2>
                 @if(!empty($contactData) && $contactData->isNotEmpty())
-                @foreach($contactData as $contact)
-                    <div class="mt-4 space-y-2 text-gray-600">
-                        <p><strong>Name:</strong> {{ $contact->name }}</p>
-                        <p><strong>Surname:</strong> {{ $contact->last_name }}</p>
-                        <p><strong>Phone:</strong> {{ $contact->phone}}</p>
-                        <p><strong>Email:</strong> {{ $contact->email}}</p>
-                        <p><strong>Department:</strong> {{ $contact->department}}</p>
-                        <p><strong>Position:</strong> {{ $contact->position}}</p>
-                    </div>
-                @endforeach
-            @else
-                <p class="text-gray-500 mt-4">No contact information available.</p>
-            @endif
+                    @foreach($contactData as $contact)
+                        <div class="mt-4 space-y-2 text-gray-600 border-b pb-4">
+                            <p><strong>Name:</strong> {{ $contact->name }}</p>
+                            <p><strong>Surname:</strong> {{ $contact->last_name }}</p>
+                            <p><strong>Phone:</strong> {{ $contact->phone }}</p>
+                            <p><strong>Email:</strong> {{ $contact->email }}</p>
+                            <p><strong>Department:</strong> {{ $contact->department }}</p>
+                            <p><strong>Position:</strong> {{ $contact->position }}</p>
+                            
+                            <!-- Action Buttons -->
+                            <div class="flex space-x-2 mt-2">
+                                <!-- Edit Button -->
+                                <x-edit-contact-modal type="stakeholder" :item="$contact" :item2="$stakeholder" x-show="open" />
             
+                                <!-- Delete Button (Triggers Modal) -->
+                                <a href="#" 
+                                    class="px-2 text-decoration-none pt-2 pb-1 text-xs font-medium text-white bg-red-500 rounded hover:bg-red-600"
+                                    data-toggle="modal" 
+                                    data-target="#deleteModal"
+                                    data-url="{{ route('contacts.destroy', $contact->id) }}">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-gray-500 mt-4">No contact information available.</p>
+                @endif
             </div>
+            
+            <!-- Delete Confirmation Modal -->
+            <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-900 bg-opacity-50">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-lg font-semibold text-gray-700">Confirm Deletion</h2>
+                    <p class="mt-2 text-gray-600">Are you sure you want to delete this contact?</p>
+                    
+                    <!-- Delete Form -->
+                    <form id="deleteForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <div class="mt-4 flex justify-end space-x-2">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                Cancel
+                            </button>
+                            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                                Delete
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            
+            
         </div>
 
 
@@ -113,8 +152,8 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-center my-2">
-            <div class="my-2 flex space-x-4">
+        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-center mt-5">
+            <div class="mt-6 flex space-x-4">
                 <a href="{{ route('stakeholders.index') }}" 
                 class=" btn btn-primary ml-1 mr-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded">
                 Back to List
@@ -130,4 +169,24 @@
 
        
     </div>
+
+    <!-- JavaScript to Update Modal Form Action -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteForm = document.getElementById('deleteForm');
+
+        document.querySelectorAll('[data-target="#deleteModal"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const deleteUrl = this.getAttribute('data-url');
+                deleteForm.setAttribute('action', deleteUrl);
+                deleteModal.classList.remove('hidden');
+            });
+        });
+    });
+
+    function closeModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+    }
+</script>
 </x-app-layout>

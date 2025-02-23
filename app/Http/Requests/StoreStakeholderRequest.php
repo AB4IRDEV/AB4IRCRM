@@ -28,6 +28,7 @@ class StoreStakeholderRequest extends FormRequest
             'type'=>'required',
             'email'=>'nullable|email|string|max:255',
             'address'=>'nullable|string|max:255',
+            'image'=>'nullable|mimes:jpg,png,jpeg',
             
         ];
     }

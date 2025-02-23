@@ -26,6 +26,7 @@ class Beneficiary extends Model
         'id_number', 
         'gender',  
         'highest_qualification',
+        'photo',
         'created_by', 
         'updated_by', 
     ];

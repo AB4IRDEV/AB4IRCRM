@@ -11,7 +11,7 @@ class UpdateContactRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class UpdateContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'stakeholder_id' => 'required|exists:stakeholders,id',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:10',
+            'email' => 'nullable|email|max:255',
+            'department' => 'nullable|string|max:255',
+            'position' => 'nullable|string|max:255',
         ];
+    
     }
 }
