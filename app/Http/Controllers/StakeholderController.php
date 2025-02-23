@@ -45,7 +45,7 @@ class StakeholderController extends Controller
             $file=$request->file('image');
             $extension =$file->getClientOriginalExtension();
             $filename=$request->organisation.'.'.$extension;
-            $path= 'uploads/stakeholders/';
+            $path= 'uploads/stakeholders/'; 
             
             // Move file to the storage path
             $file->move($path, $filename);

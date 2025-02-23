@@ -9,8 +9,8 @@ use App\Models\NextOfKin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request; 
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class BeneficiaryController extends Controller
 {
@@ -46,12 +46,27 @@ class BeneficiaryController extends Controller
     {
         // Validate input
         $beneficiaryData = $request->validated();
+        
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $request->name . '.' . time() . '.' . $extension; // Correct concatenation
+            $path = 'uploads/beneficiary_photos/';
     
+            if (!file_exists(public_path($path))) {
+                mkdir(public_path($path), 0777, true);
+            }
+    
+            $file->move(public_path($path), $filename);
+            $beneficiaryData['photo'] = $path . $filename;  // Storing path in session
+        }
+        
         // Store data in session
         Session::put('beneficiary_data', $beneficiaryData);
-    
+        
         return redirect()->back()->with('status', 'Beneficiary saved successfully.');
     }
+    
     
     
 
@@ -81,7 +96,6 @@ class BeneficiaryController extends Controller
                 throw new \Exception('Failed to save Next of Kin.');
             }
     
-            // Ensure correct key usage
             $data['next_of_kin_id'] = $nextOfKin->id;
     
             // Save Beneficiary and link Next of Kin
@@ -96,7 +110,8 @@ class BeneficiaryController extends Controller
                 'gender' => $data['gender'] ?? null,
                 'location' => $data['location'] ?? null,
                 'highest_qualification' => $data['highest_qualification'] ?? null,
-                'next_of_kin_id' => $nextOfKin->id, // Corrected key
+                'photo' => $data['photo'] ?? null, 
+                'next_of_kin_id' => $nextOfKin->id,
                 'created_by' => $userId,
                 'updated_by' => $userId,
             ]);
@@ -106,10 +121,7 @@ class BeneficiaryController extends Controller
                 return redirect()->back()->withErrors(['error' => 'Failed to save Beneficiary.']);
             }
     
-            // Commit transaction
             DB::commit();
-    
-            // Clear session
             Session::forget('beneficiary_data');
     
             return redirect()->route('projects.beneficiaries.index')->with('success', 'Beneficiary and Next of Kin saved successfully.');
@@ -118,64 +130,94 @@ class BeneficiaryController extends Controller
             return redirect()->back()->withErrors(['error' => 'An error occurred: ' . $e->getMessage()]);
         }
     }
+    
 
    
 
     public function update(Request $request, Beneficiary $beneficiary)
     {
-        // Validate the input
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'dob' => 'required|date',
-            'id_number' => 'required|string|max:20|unique:beneficiaries,id_number,' . $beneficiary->id,
-            'age' => 'required|integer',
-            'gender' => 'required|string',
-            'location' => 'required|string|max:255',
-            'highest_qualification' => 'nullable|string|max:255',
-       
-    
-            // Next of Kin Fields
-            'next_of_kin_name' => 'required|string|max:255',
-            'next_of_kin_last_name' => 'required|string|max:255',
-            'relationship' => 'required|in:Parent,Sibling,Spouse,Guardian,Relative,Friend,Other',
-            'next_of_kin_phone' => 'required|string|max:15',
-            'next_of_kin_email' => 'nullable|email|max:255'
+        // Validate the input. Note that next-of-kin fields are included in the validation,
+        // but they are not part of the beneficiaries table.
+        $validatedData = $request->validate([
+            'name'                      => 'required|string|max:255',
+            'surname'                   => 'required|string|max:255',
+            'phone'                     => 'nullable|string|max:20',
+            'email'                     => 'nullable|email|max:255',
+            'dob'                       => 'required|date',
+            'id_number'                 => 'required|string|max:20|unique:beneficiaries,id_number,' . $beneficiary->id,
+            'age'                       => 'required|integer',
+            'gender'                    => 'required|string',
+            'location'                  => 'required|string|max:255',
+            'highest_qualification'     => 'nullable|string|max:255',
+            'photo'                     => 'nullable|mimes:jpg,png,jpeg',
+            
+            // Next of Kin Fields (not part of the beneficiaries table)
+            'next_of_kin_name'          => 'required|string|max:255',
+            'next_of_kin_last_name'     => 'required|string|max:255',
+            'relationship'              => 'required|in:Parent,Sibling,Spouse,Guardian,Relative,Friend,Other',
+            'next_of_kin_phone'         => 'required|string|max:15',
+            'next_of_kin_email'         => 'nullable|email|max:255',
         ]);
     
-        // Update Beneficiary Data
-        $beneficiary->update($request->only([
-            'name', 'surname', 'phone', 'email', 'dob', 'id_number', 
-            'age', 'gender', 'location', 'highest_qualification'
-            ]) + [
-                'updated_by' => Auth::id() // Store the currently logged-in user
-            ]);
+        // Extract Next of Kin data and remove them from the beneficiary data array
+        $nextOfKinData = [
+            'first_name'  => $validatedData['next_of_kin_name'],
+            'last_name'   => $validatedData['next_of_kin_last_name'],
+            'phone'       => $validatedData['next_of_kin_phone'],
+            'email'       => $validatedData['next_of_kin_email'],
+            'relationship'=> $validatedData['relationship'],
+        ];
     
-        // Check if Next of Kin exists for this Beneficiary
+        // Remove Next of Kin fields from validatedData as they don't belong to beneficiaries
+        unset(
+            $validatedData['next_of_kin_name'],
+            $validatedData['next_of_kin_last_name'],
+            $validatedData['relationship'],
+            $validatedData['next_of_kin_phone'],
+            $validatedData['next_of_kin_email']
+        );
+    
+        // Handle file upload if a new photo is provided
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $request->name . '_' . time() . '.' . $extension;
+            $path = 'uploads/beneficiary_photos/';
+    
+            // Ensure directory exists
+            if (!file_exists(public_path($path))) {
+                mkdir(public_path($path), 0777, true);
+            }
+    
+            // Move the new file
+            $file->move(public_path($path), $filename);
+    
+            // Delete the old photo if it exists
+            if ($beneficiary->photo && file_exists(public_path($beneficiary->photo))) {
+                unlink(public_path($beneficiary->photo));
+            }
+    
+            // Set the new photo path in the beneficiary data
+            $validatedData['photo'] = $path . $filename;
+        }
+    
+        // Set the updated_by field
+        $validatedData['updated_by'] = Auth::id();
+    
+        // Update the beneficiary record with its own fields only
+        $beneficiary->update($validatedData);
+    
+        // Update or create the Next of Kin record associated with this beneficiary
         if ($beneficiary->nextOfKin) {
-            // Update existing Next of Kin record
-            $beneficiary->nextOfKin->update([
-                'first_name' => $request->next_of_kin_name,
-                'last_name' => $request->next_of_kin_last_name, 
-                'phone' => $request->next_of_kin_phone,
-                'email' => $request->next_of_kin_email,
-                'relationship' => $request->relationship, 
-            ]);
+            $beneficiary->nextOfKin->update($nextOfKinData);
         } else {
-            // Create new Next of Kin record if not found
-            $beneficiary->nextOfKin()->create([
-                'first_name' => $request->next_of_kin_name,
-                'last_name' => $request->next_of_kin_last_name, 
-                'phone' => $request->next_of_kin_phone,
-                'email' => $request->next_of_kin_email,
-                'relationship' => $request->relationship, 
-            ]);
+            $beneficiary->nextOfKin()->create($nextOfKinData);
         }
     
         return redirect('beneficiaries')->with('status', 'Beneficiary and Next of Kin updated successfully.');
     }
+    
+    
 
 
     public function show(Beneficiary $beneficiary){
@@ -189,14 +231,19 @@ class BeneficiaryController extends Controller
     
     public function destroy(Beneficiary $beneficiary)
     {
+        // Delete the beneficiary's photo if it exists
+        if ($beneficiary->photo && File::exists(public_path($beneficiary->photo))) {
+            File::delete(public_path($beneficiary->photo));
+        }
+        
         // Check if the beneficiary has a Next of Kin and delete it
         if ($beneficiary->nextOfKin) {
             $beneficiary->nextOfKin->delete();
         }
-    
-        // Delete the beneficiary
+        
+        // Delete the beneficiary record
         $beneficiary->delete();
-    
+        
         return redirect('beneficiaries')->with('status', 'Beneficiary and Next of Kin deleted successfully');
     }
     
