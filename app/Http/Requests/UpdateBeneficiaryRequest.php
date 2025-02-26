@@ -37,6 +37,8 @@ class UpdateBeneficiaryRequest extends FormRequest
             'dob' => 'required',
             'highest_qualification' => 'nullable|string|max:255',
             'photo' => 'nullable|mimes:png,jpg,jpeg',
+            'province_id'               => 'required',
+            'program_id'                => 'required',
             
         ];
     }

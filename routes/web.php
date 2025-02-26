@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StakeholderController;
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\ProgramsController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -45,13 +47,17 @@ Route::resource('roles', RolesController::class);
 Route::delete('user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 Route::resource('user', UserController::class);
 
+//Projects Crud Routes
+Route::delete('programs/{programs}',[ProgramsController::class,'delete'])->name('programs.delete');
+Route::resource('programs', ProgramsController::class);
+
 //Stakeholder Crud Routes
 Route::delete('stakeholders/{stakeholder}',[StakeholderController::class,'delete'])->name('stakeholder.delete');
 Route::resource('stakeholders', StakeholderController::class);
 
 //Projects Crud Routes
-Route::delete('programs/{programs}',[ProgramController::class,'delete'])->name('program.delete');
-Route::resource('programs', ProgramController::class);
+Route::delete('projects/{projects}',[ProjectController::class,'delete'])->name('projects.delete');
+Route::resource('projects', ProjectController::class);
 
 
 //Beneficiary Crud Routes 

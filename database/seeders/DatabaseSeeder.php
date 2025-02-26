@@ -15,9 +15,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::factory()->create(
+            [
+              'name' => 'John',
+                'email' => 'john@ab4ir.org',
+                'password'=>'123456789'
+            
+        ]);
+
+        $this->call([
+            ProvinceSeeder::class,
         ]);
     }
 }

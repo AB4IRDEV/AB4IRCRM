@@ -68,22 +68,27 @@
                             <x-input-error class="mt-2" :messages="$errors->get('gender')" />
                         </div>
                     </div>
-            
-                    <div class="w-full scheme-dark">
-                        <x-input-label for="location" :value="__('Location')" />
-                        <select id="location" name="location" class="mt-1 block w-full dark:bg-black" required>
-                            <option value="">Select Province</option>
-                            <option value="Eastern Cape" {{ session('beneficiary_data.location') == 'Eastern Cape' ? 'selected' : '' }}>Eastern Cape</option>
-                            <option value="Free State" {{ session('beneficiary_data.location') == 'Free State' ? 'selected' : '' }}>Free State</option>
-                            <option value="Gauteng" {{ session('beneficiary_data.location') == 'Gauteng' ? 'selected' : '' }}>Gauteng</option>
-                            <option value="KwaZulu-Natal" {{ session('beneficiary_data.location') == 'KwaZulu-Natal' ? 'selected' : '' }}>KwaZulu-Natal</option>
-                            <option value="Limpopo" {{ session('beneficiary_data.location') == 'Limpopo' ? 'selected' : '' }}>Limpopo</option>
-                            <option value="Mpumalanga" {{ session('beneficiary_data.location') == 'Mpumalanga' ? 'selected' : '' }}>Mpumalanga</option>
-                            <option value="North West" {{ session('beneficiary_data.location') == 'North West' ? 'selected' : '' }}>North West</option>
-                            <option value="Northern Cape" {{ session('beneficiary_data.location') == 'Northern Cape' ? 'selected' : '' }}>Northern Cape</option>
-                            <option value="Western Cape" {{ session('beneficiary_data.location') == 'Western Cape' ? 'selected' : '' }}>Western Cape</option>
-                        </select>
-                        <x-input-error class="mt-2" :messages="$errors->get('location')" />
+
+                    <div class="flex w-full gap-4">
+                        <div class="w-full">
+                            <x-input-label for="province" :value="__('location')" />   
+                            <select id="province_id" name="province_id" class="mt-1 block w-full text-dark">
+                                @foreach ($locations as $location)
+                                    <option class="text-dark" value="{{ $location->id }}">{{ $location->name }}</option>
+                                @endforeach
+                            </select>                                
+                            <x-input-error class="mt-2" :messages="$errors->get('location_id')" />
+                        </div>
+
+                        <div class="w-full">
+                            <x-input-label for="Select project" :value="__('Select Project')" />   
+                            <select id="project_id" name="project_id" class="mt-1 block w-full text-dark">
+                                @foreach ($projects as $project)
+                                    <option class="text-dark" value="{{ $project->id }}">{{ $project->title}}</option>
+                                @endforeach
+                            </select>                                 
+                            <x-input-error class="mt-2" :messages="$errors->get('project_id')" />
+                        </div>
                     </div>
                     
                     <div class="flex items-center gap-4">

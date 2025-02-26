@@ -25,8 +25,18 @@
                     <p><strong>ID Number:</strong> {{ $beneficiary->id_number }}</p>
                     <p><strong>Email:</strong> {{ $beneficiary->email }}</p>
                     <p><strong>Phone:</strong> {{ $beneficiary->phone }}</p>
-                    <p><strong>Province:</strong> {{ $beneficiary->location }}</p>
                     <p><strong>Qualifications:</strong> {{ $beneficiary->highest_qualification }}</p>
+                    <p><strong>Program:</strong>
+                        @foreach ($beneficiary->program as $program)
+                        <span>{{ $program->title }}</span>
+                        @endforeach
+                    </p>
+                    <p><strong>Province:</strong>
+                        @foreach ($beneficiary->province as $province)
+                        <span>{{ $province->name }}</span>
+                        @endforeach
+                    </p>
+                    
                     <br>
                     <p><strong>Updated by:</strong> {{ $updateuser ? $updateuser->name : 'Unknown' }}</p>
                     <p><strong>Created by:</strong> {{ $createuser ? $createuser->name : 'Unknown' }}</p>

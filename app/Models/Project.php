@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Program extends Model
+class Project extends Model
 {
     /** @use HasFactory<\Database\Factories\ProgramFactory> */
     use HasFactory;
 
-    protected $fillable = ['title', 
+    protected $fillable = [
+
+                           'title', 
                            'description', 
                            'accredited',
                            'nqf_level',
@@ -18,22 +20,29 @@ class Program extends Model
                            'end_date',
                            'year',
                            'budget',
-                           'Status',
+                           'status',
                            'program_manager_id',
                            'intended_beneficiaries',
                            'completed_beneficiaries',
                            'created_by', 
-                           'updated_by'];
+                           'updated_by'
+                        ];
 
-public function locations()
+public function provinces()
 {
-    return $this->belongsToMany(Locations::class, 'program_location');
+    return $this->belongsToMany(Province::class, 'project_location', 'project_id', 'province_id');
 }
                        
 public function beneficiaries()
 {
-    return $this->belongsToMany(Beneficiary::class, 'beneficiary_program_location')
-                ->withPivot('location_id', 'enrollment_date')
+    return $this->belongsToMany(Beneficiary::class, 'beneficiary_program_project_location')
+                ->withPivot('province_id', 'enrollment_date')
+                ->withTimestamps();
+}
+
+public function stakeholders()
+{
+    return $this->belongsToMany(Stakeholder::class, 'funder_project')
                 ->withTimestamps();
 }
 

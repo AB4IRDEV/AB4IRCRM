@@ -6,6 +6,9 @@ use App\Models\Beneficiary;
 use App\Http\Requests\StoreBeneficiaryRequest;
 use App\Http\Requests\UpdateBeneficiaryRequest;
 use App\Models\NextOfKin;
+use App\Models\Program;
+use App\Models\Project;
+use App\Models\Province;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -19,15 +22,19 @@ class BeneficiaryController extends Controller
      */
     public function index()
     {
-        $beneficiaries=Beneficiary::get();
+
+        $beneficiaries = Beneficiary::with(['Project', 'province'])->get();
+
         return view('projects.beneficiaries.index', ['beneficiaries'=>$beneficiaries]);
     }
 
     public function edit(Beneficiary $beneficiary){
 
+        $Projects=Project::get();
+        $locations=Province::get();
         $nextOfKin = $beneficiary->nextOfKin; // Use the relationship
        
-        return view('projects.beneficiaries.edit', ['beneficiary'=>$beneficiary, 'nextOfKin'=>$nextOfKin]);
+        return view('projects.beneficiaries.edit', ['beneficiary'=>$beneficiary, 'nextOfKin'=>$nextOfKin, 'Projects' => $Projects , 'locations' => $locations]);
     }
 
     /**
@@ -35,8 +42,10 @@ class BeneficiaryController extends Controller
      */
     public function create()
     {
-        $beneficiaries=Beneficiary::get();
-        return view('projects.beneficiaries.create', ['beneficiaries'=>$beneficiaries]);
+        $projects=Project::get();
+        $locations=Province::get();
+        
+        return view('projects.beneficiaries.create', [ 'projects' => $projects , 'locations' => $locations]);
     }
 
     /**
@@ -120,6 +129,16 @@ class BeneficiaryController extends Controller
                 DB::rollBack();
                 return redirect()->back()->withErrors(['error' => 'Failed to save Beneficiary.']);
             }
+
+            if (isset($data['program_id']) && isset($data['province_id'])) {
+                $beneficiary->Project()->attach($data['program_id'], [
+                    'province_id' => $data['province_id'], 
+                    'enrollment_date' => now(), // Set enrollment date to current time
+                ]);
+
+            
+            
+            }
     
             DB::commit();
             Session::forget('beneficiary_data');
@@ -147,9 +166,11 @@ class BeneficiaryController extends Controller
             'id_number'                 => 'required|string|max:20|unique:beneficiaries,id_number,' . $beneficiary->id,
             'age'                       => 'required|integer',
             'gender'                    => 'required|string',
-            'location'                  => 'required|string|max:255',
             'highest_qualification'     => 'nullable|string|max:255',
             'photo'                     => 'nullable|mimes:jpg,png,jpeg',
+            'province_id'               => 'required',
+            'program_id'                => 'required',
+
             
             // Next of Kin Fields (not part of the beneficiaries table)
             'next_of_kin_name'          => 'required|string|max:255',
@@ -200,6 +221,15 @@ class BeneficiaryController extends Controller
             // Set the new photo path in the beneficiary data
             $validatedData['photo'] = $path . $filename;
         }
+
+        if (isset($validatedData['program_id']) && isset($validatedData['province_id'])) {
+            $beneficiary->Project()->attach($validatedData['program_id'], [
+                'province_id' => $validatedData['province_id'], 
+                'enrollment_date' => now(), // Set enrollment date to current time
+            ]);
+
+        }
+    
     
         // Set the updated_by field
         $validatedData['updated_by'] = Auth::id();
@@ -221,7 +251,7 @@ class BeneficiaryController extends Controller
 
 
     public function show(Beneficiary $beneficiary){
-
+        $beneficiary->with(['Project', 'province'])->get();
         $nextOfKin = $beneficiary->nextOfKin;
         $createuser = $beneficiary->creator; // Use the relationship
         $updateuser = $beneficiary->updater; // Use the relationship
@@ -229,7 +259,7 @@ class BeneficiaryController extends Controller
     }
     
     
-    public function destroy(Beneficiary $beneficiary)
+    public function destroy(Beneficiary $beneficiary) 
     {
         // Delete the beneficiary's photo if it exists
         if ($beneficiary->photo && File::exists(public_path($beneficiary->photo))) {

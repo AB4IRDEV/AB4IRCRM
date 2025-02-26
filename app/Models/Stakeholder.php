@@ -16,7 +16,7 @@ class Stakeholder extends Model
 
     public function programs()
     {
-        return $this->belongsToMany(Program::class, 'funder_program');
+        return $this->belongsToMany(Project::class, 'funder_project');
     }
     public function contacts()
     {

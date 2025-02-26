@@ -34,18 +34,18 @@ class Beneficiary extends Model
 
     public function program()
     {
-        return $this->belongsToMany(Program::class, 'beneficiary_program_location')
-                    ->withPivot('location_id', 'enrollment_date')
+        return $this->belongsToMany(Project::class, 'beneficiary_program_project_location')
+                    ->withPivot('province_id', 'enrollment_date') // Changed location_id to province_id
                     ->withTimestamps();
     }
-
-
-    public function locations()
+    
+    public function province()
     {
-        return $this->belongsToMany(Locations::class, 'beneficiary_program_location')
+        return $this->belongsToMany(Province::class, 'beneficiary_program_project_location')
                     ->withPivot('program_id', 'enrollment_date')
                     ->withTimestamps();
     }
+    
 
      // Relationship with Next of Kin
      public function nextOfKin() {
@@ -63,10 +63,6 @@ class Beneficiary extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
-    public function programs()
-    {
-        return $this->belongsToMany(Program::class, 'beneficiary_program');
-    }
 
     protected $casts = [
         'dob' => 'date',
