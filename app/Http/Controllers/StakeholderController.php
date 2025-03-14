@@ -18,7 +18,7 @@ class StakeholderController extends Controller
      */
     public function index()
     {
-        $stakeholders=Stakeholder::get();
+        $stakeholders = Stakeholder::paginate(10);
         $types = ['Funder', 'Associate', 'Implementing_Partner', 'Supplier'];
         return view('projects.stakeholders.index',['stakeholders'=>$stakeholders, 'types'=>$types]);
     }

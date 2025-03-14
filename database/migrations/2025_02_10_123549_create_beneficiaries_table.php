@@ -23,10 +23,7 @@ return new class extends Migration
             $table->enum('gender', [
                 'male', 'female'
             ]);
-            $table->enum('location', [
-                'Eastern Cape', 'Free State', 'Gauteng', 'KwaZulu-Natal', 'Limpopo', 
-                'Mpumalanga', 'North West', 'Northern Cape', 'Western Cape'
-            ])->nullable();
+            $table->foreignId('location_id')->nullable()->constrained();
             $table->string('highest_qualification')->nullable();
             $table->foreignId('next_of_kin_id')->nullable()->constrained('next_of_kin')->onDelete('set null');
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');

@@ -8,7 +8,6 @@
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">ID</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Title</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Description</th>
-
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Action</th>
                     </x-slot>
             @if (session('status'))
@@ -25,16 +24,16 @@
             @foreach($programs as $program)
             <tr class="border-b border-gray-200 dark:border-gray-700 text-black">
                 <td class="px-4 py-2">{{ $program->id }}</td>
-                <td class="px-4 py-2"><a href="{{route('stakeholders.show', $program->id)}}">{{ $program->title}}</a></td>
+                <td class="px-4 py-2"><a href="{{route('programs.show', $program->id)}}">{{ $program->name}}</a></td>
                 <td class="px-4 py-2">{{ $program->description}}</td>
 
                 <td class="px-4 py-2 flex">
-                    <a href="{{ url('stakeholders/'.$program->id) }}" 
+                    <a href="{{ url('programs/'.$program->id) }}" 
                         class="inline-block btn btn-warning px-3 py-2 mr-2 text-xs font-medium text-white bg-yellow-600 rounded hover:bg-gray-700">
                          View Program
                      </a>
                      
-                    <a href="{{ url('stakeholders/'.$program->id.'/edit') }}" 
+                    <a href="{{ url('programs/'.$program->id.'/edit') }}" 
                         class="inline-block btn btn-dark px-3 py-2 mx-4 text-xs font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
                          Edit Program
                      </a>
@@ -58,7 +57,7 @@
         
                 <div>
                 <x-input-label for="Title" :value="__('Title')" />
-                <x-text-input id="title" name="title" type="text" class="mt-1 block w-full"  required autofocus autocomplete="name" />
+                <x-text-input id="title" name="name" type="text" class="mt-1 block w-full"  required autofocus autocomplete="name" />
                 <x-input-error class="mt-2" :messages="$errors->get('title')" />
                 </div>
 

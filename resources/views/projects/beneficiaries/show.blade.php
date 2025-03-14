@@ -27,13 +27,13 @@
                     <p><strong>Phone:</strong> {{ $beneficiary->phone }}</p>
                     <p><strong>Qualifications:</strong> {{ $beneficiary->highest_qualification }}</p>
                     <p><strong>Program:</strong>
-                        @foreach ($beneficiary->program as $program)
-                        <span>{{ $program->title }}</span>
+                        @foreach ($beneficiary->projects as $project)
+                        <span>{{ $project->title }}</span>
                         @endforeach
                     </p>
                     <p><strong>Province:</strong>
-                        @foreach ($beneficiary->province as $province)
-                        <span>{{ $province->name }}</span>
+                        @foreach ($beneficiary->projects as $project)
+                        <span>{{ $project->pivot->location->name }}</span>
                         @endforeach
                     </p>
                     

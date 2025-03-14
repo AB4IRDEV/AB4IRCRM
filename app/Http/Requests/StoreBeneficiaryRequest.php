@@ -37,8 +37,8 @@ class StoreBeneficiaryRequest extends FormRequest
             'dob' => 'required',
             'highest_qualification' => 'nullable|string|max:255',
             'photo' => 'nullable|mimes:png,jpg,jpeg',
-            'program_id' => 'required',
-            'province_id' => 'required',
+            'project_id' => 'required',
+            'location_id' => 'required',
             
         ];
     }

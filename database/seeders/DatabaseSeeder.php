@@ -24,7 +24,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            ProvinceSeeder::class,
+            LocationsSeeder::class,
         ]);
+
+        $this->call(
+            ProgramsSeeder::class
+        );
     }
 }

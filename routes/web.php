@@ -3,6 +3,7 @@
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectTemplateController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StakeholderController;
@@ -15,9 +16,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+Route::redirect('/',('dashboard')
+);
 
 
 Route::get('/dashboard', function () {
@@ -48,6 +48,8 @@ Route::delete('user/{user}', [UserController::class, 'destroy'])->name('user.des
 Route::resource('user', UserController::class);
 
 //Projects Crud Routes
+Route::post('/programs-templates', [ProgramsController::class, 'storeSubcategory'])
+->name('programs_templates.save');
 Route::delete('programs/{programs}',[ProgramsController::class,'delete'])->name('programs.delete');
 Route::resource('programs', ProgramsController::class);
 
@@ -56,9 +58,11 @@ Route::delete('stakeholders/{stakeholder}',[StakeholderController::class,'delete
 Route::resource('stakeholders', StakeholderController::class);
 
 //Projects Crud Routes
+
 Route::delete('projects/{projects}',[ProjectController::class,'delete'])->name('projects.delete');
 Route::resource('projects', ProjectController::class);
 
+Route::get('/get-project-templates', [ProjectTemplateController::class, 'getProjectTemplates'])->name('getProjectTemplates');
 
 //Beneficiary Crud Routes 
 Route::resource('beneficiaries', BeneficiaryController::class);

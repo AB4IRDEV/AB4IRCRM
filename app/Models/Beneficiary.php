@@ -19,6 +19,7 @@ class Beneficiary extends Model
         'email', 
         'next_of_kin_name', 
         'next_of_kin_id', 
+        'location_id', 
         'next_of_kin_last_name', 
         'relationship', 
         'next_of_kin_phone', 
@@ -32,21 +33,21 @@ class Beneficiary extends Model
     ];
     
 
-    public function program()
+    public function projects()
     {
-        return $this->belongsToMany(Project::class, 'beneficiary_program_project_location')
-                    ->withPivot('province_id', 'enrollment_date') // Changed location_id to province_id
+        return $this->belongsToMany(Project::class, 'project_beneficiary')
+                    ->using(\App\Models\ProjectBeneficiary::class)
+                    ->withPivot('location_id', 'enrolment_date')
                     ->withTimestamps();
     }
+    
     
     public function province()
     {
-        return $this->belongsToMany(Province::class, 'beneficiary_program_project_location')
-                    ->withPivot('program_id', 'enrollment_date')
-                    ->withTimestamps();
+        return $this->belongsTo(Locations::class, 'location_id');
+                    
     }
     
-
      // Relationship with Next of Kin
      public function nextOfKin() {
         return $this->belongsTo(NextOfKin::class, 'next_of_kin_id');

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('funder_project', function (Blueprint $table) {
+        Schema::create('project_templates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('stakeholder_id')->constrained('stakeholders')->onDelete('cascade');
-            $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
-            $table->foreignId('program_id')->constrained('programs')->onDelete('cascade');
+            $table->foreignId('program_id')->constrained('programs');
+            $table->string('title');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('funder_project');
+        Schema::dropIfExists('project_templates');
     }
 };

@@ -72,7 +72,7 @@
                     <div class="flex w-full gap-4">
                         <div class="w-full">
                             <x-input-label for="province" :value="__('location')" />   
-                            <select id="province_id" name="province_id" class="mt-1 block w-full text-dark">
+                            <select id="location_id" name="location_id" class="mt-1 block w-full text-dark">
                                 @foreach ($locations as $location)
                                     <option class="text-dark" value="{{ $location->id }}">{{ $location->name }}</option>
                                 @endforeach

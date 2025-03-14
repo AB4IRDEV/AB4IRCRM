@@ -9,7 +9,58 @@
                     @endforeach
                 </ul>
             </div>
-        @endif
+            @endif
+
+            @if (session('status'))
+            <div 
+                x-data="{ show: true }" 
+                x-show="show" 
+                x-transition 
+                x-init="setTimeout(() => show = false, 3000)" 
+                class="alert alert-success"
+            >
+                {{ session('status') }}
+            </div>
+            @endif
+
+        <div class="container mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white shadow-md rounded-lg p-6">
+            <div class="justify-center items-center">
+                <img src="{{ asset($beneficiary->photo) }}" alt="Beneficiary Photo" class="w-full max-h-96 object-contain rounded-lg">
+
+                <h1 class='text-center mt-2'>{{ $beneficiary->name }}</h1>
+            </div>
+            
+            <!-- Beneficiary Details (Left) -->
+            <div class="text-center space-y-4 text-gray-600">
+                <h2 class="text-center text-xl font-semibold text-gray-700">Beneficiary Details</h2>
+                
+                <p><strong>Gender:</strong> {{ $beneficiary->gender }}</p>
+                <p><strong>Age:</strong> {{ $beneficiary->age }}</p>
+                <p><strong>Date of Birth:</strong> {{ $beneficiary->dob->format('Y-m-d') }}</p>
+                <p><strong>ID Number:</strong> {{ $beneficiary->id_number }}</p>
+                <p><strong>Email:</strong> {{ $beneficiary->email }}</p>
+                <p><strong>Phone:</strong> {{ $beneficiary->phone }}</p>
+                <p><strong>Qualifications:</strong> {{ $beneficiary->highest_qualification }}</p>
+        
+                <p><strong>Program:</strong> 
+                    @foreach ($beneficiary->projects as $project)
+                        <span>{{ $project->title }}</span>@if (!$loop->last), @endif
+                    @endforeach
+                </p>
+        
+                <p><strong>Province:</strong> 
+                    {{ $beneficiary->province ? $beneficiary->province->name : 'N/A' }}
+                </p>
+        
+                <p class="text-xs"><strong>Created by:</strong> {{ $createuser ? $createuser->name : 'Unknown' }}</p>
+                <p class="text-xs"><strong>Updated by:</strong> {{ $updateuser ? $updateuser->name : 'Unknown' }}</p>
+                
+            </div>
+        
+          
+         
+        </div>
+        
             <x-card title="Add Beneficiary" buttonText="back" buttonLink="beneficiaries">
                 <form method="post" action="{{ route('beneficiaries.update', $beneficiary->id) }}" class="mt-6 space-y-6" enctype="multipart/form-data">
                     @csrf
@@ -74,7 +125,7 @@
                     <div class="flex w-full gap-4">
                         <div class="w-full">
                             <x-input-label for="province" :value="__('location')" />   
-                            <select id="province_id" name="province_id" class="mt-1 block w-full text-dark">
+                            <select id="location_id" name="location_id" class="mt-1 block w-full text-dark">
                                 @foreach ($locations as $location)
                                     <option class="text-dark" value="{{ $location->id }}">{{ $location->name }}</option>
                                 @endforeach
@@ -84,19 +135,19 @@
 
                         <div class="w-full">
                             <x-input-label for="Select program" :value="__('Select Program ')" />   
-                            <select id="program_id" name="program_id" class="mt-1 block w-full text-dark">
-                                @foreach ($programs as $program)
-                                    <option class="text-dark" value="{{ $program->id }}">{{ $program->title}}</option>
+                            <select id="project_id" name="project_id" class="mt-1 block w-full text-dark">
+                                @foreach ($projects as $project)
+                                    <option class="text-dark" value="{{ $project->id }}">{{ $project->title}}</option>
                                 @endforeach
                             </select>                                 
-                            <x-input-error class="mt-2" :messages="$errors->get('program_id')" />
+                            <x-input-error class="mt-2" :messages="$errors->get('project_id')" />
                         </div>
                     </div>
             
                     <div class="flex items-center gap-4">
                         <div class="w-full">
                             <x-input-label for="highest_qualification" :value="__('Highest Qualification')" />
-                            <x-text-input id="highest_qualification" name="highest_qualification" type="text" class="mt-1 block w-full" value="{{ session('beneficiary_data.highest_qualification', '') }}" />
+                            <x-text-input id="highest_qualification" name="highest_qualification" type="text" class="mt-1 block w-full" :value="old('phone', $beneficiary->highest_qualification)" />
                             <x-input-error class="mt-2" :messages="$errors->get('highest_qualification')" />
                         </div>
 

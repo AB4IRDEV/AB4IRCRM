@@ -12,9 +12,16 @@ class Programs extends Model
 
     protected $fillable = [
 
-        'title', 
+        'name', 
         'description', 
         'created_by', 
         'updated_by'
      ];
+
+     public function stakeholders()
+{
+    return $this->belongsTo(Stakeholder::class, 'project_stakeholder')
+                ->withTimestamps();
+}
+     
 }

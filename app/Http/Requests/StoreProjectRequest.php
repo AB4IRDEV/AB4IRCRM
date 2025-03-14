@@ -22,7 +22,8 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+                'program_id'=>'required',
+                'project_template_id'=>'required',
                 'title' =>'required',
                 'description'=> 'nullable', 
                 'accredited'=> 'nullable',
@@ -31,7 +32,7 @@ class StoreProjectRequest extends FormRequest
                 'end_date'=> 'nullable',
                 'year'=> 'nullable',
                 'budget'=> 'nullable',
-                'Status'=> 'nullable',
+                'status' => 'required|in:active,completed,cancelled',
                 'program_manager_id'=> 'nullable',
                 'intended_beneficiaries'=> 'nullable',
                 'completed_beneficiaries'=> 'nullable',

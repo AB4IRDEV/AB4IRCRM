@@ -37,15 +37,15 @@
                 <td class="px-4 py-2">{{ $beneficiary->email }}</td>
                 <td class="px-4 py-2">{{ $beneficiary->phone }}</td> 
                 <td class="px-4 py-2">
-                @foreach ($beneficiary->program as $program)
-                <span>{{ $program->title }}</span>
+                    @foreach ($beneficiary->projects as $project)
+                    <p>{{ $project->title }}</p>
                 @endforeach
                 </td>
+               
                 <td class="px-4 py-2">
-                @foreach ($beneficiary->province as $province)
-                <span>{{ $province->name }}</span>
-                @endforeach
+                        {{ $beneficiary->province ? $beneficiary->province->name : 'N/A' }}
                 </td>
+         
                 <td class="pr-4 py-2 flex float-end">
                     <a href="{{ url('beneficiaries/'.$beneficiary->id) }}" 
                         class="inline-block btn btn-warning px-3 py-2 mr-2 text-xs font-medium text-white bg-yellow-600 rounded hover:bg-gray-700">

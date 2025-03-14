@@ -25,7 +25,6 @@ return new class extends Migration
                   ->default('active');                         // Current status of the program
             $table->foreignId('program_manager_id')->nullable()->constrained('users')->onDelete('set null');
             $table->unsignedInteger('intended_beneficiaries')->default(0);   // Expected beneficiaries before commencement
-            $table->unsignedInteger('completed_beneficiaries')->default(0);    // Actual number of beneficiaries who complete the program
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');
             

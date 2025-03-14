@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('beneficiary_program_project_location', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('beneficiary_id')->constrained()->onDelete('cascade');
+        Schema::create('program_project', function (Blueprint $table) {
             $table->foreignId('program_id')->constrained()->onDelete('cascade');
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->foreignId('province_id')->constrained()->onDelete('cascade');
-            $table->date('enrollment_date')->nullable();
-            $table->timestamps();
+            $table->foreignId('project_template_id')->constrained()->onDelete('cascade');
+            $table->primary(['program_id', 'project_id']);
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('beneficiary_program_program_location');
+        Schema::dropIfExists('program_project');
     }
 };

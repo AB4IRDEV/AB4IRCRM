@@ -2,8 +2,10 @@
     <div class="mx-auto px-4">
         
         <div class="flex flex-wrap">
-            <div class="w-full md:w-full translate-x-10">
+            <div class="w-full md:w-full translate-x-10 bg-white">
+                
                 <x-card-table title="All Stakeholders" buttonText="" buttonLink="">
+                    
                     <x-slot name="headers">
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">ID</th>
                         <th class="px-4 py-2 text-left text-gray-600 dark:text-gray-200">Organisation</th>
@@ -23,6 +25,7 @@
             >
                 {{ session('status') }}
             </div>
+            
         @endif
             @foreach($stakeholders as $stakeholder)
             <tr class="border-b border-gray-200 dark:border-gray-700 text-black">
@@ -47,8 +50,12 @@
                 </td>
             </tr>
         @endforeach
-            
+        <div class=" ">
+            {{ $stakeholders->links() }} 
+        </div>
                 </x-card-table>
+
+               
         
             </div>
         </div>

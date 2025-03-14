@@ -30,21 +30,43 @@ class Project extends Model
 
 public function provinces()
 {
-    return $this->belongsToMany(Province::class, 'project_location', 'project_id', 'province_id');
-}
-                       
-public function beneficiaries()
-{
-    return $this->belongsToMany(Beneficiary::class, 'beneficiary_program_project_location')
-                ->withPivot('province_id', 'enrollment_date')
+    return $this->belongsToMany(Locations::class, 'project_location', 'project_id', 'location_id')
                 ->withTimestamps();
 }
+                        
+
+ public function programs()
+ {
+    return $this->belongsToMany(Programs::class, 'program_project', 'project_id', 'program_id')
+                ->withPivot('project_template_id');
+         
+ }
+ 
+ public function location()
+ {
+     return $this->belongsTo(Locations::class, 'location_id');
+ }
+ 
+                       
+ public function beneficiaries()
+ {
+     return $this->belongsToMany(Beneficiary::class, 'project_beneficiary')
+                 ->withPivot('location_id', 'enrolment_date')
+                 ->withTimestamps();
+ }
+ 
 
 public function stakeholders()
 {
-    return $this->belongsToMany(Stakeholder::class, 'funder_project')
-                ->withTimestamps();
+    return $this->belongsToMany(Stakeholder::class, 'project_stakeholder', 'project_id', 'stakeholder_id');
 }
+
+public function manager(){
+
+    return $this->belongsTo(User::class, 'program_manager_id');
+}
+
+
 
     public function creator()
     {
